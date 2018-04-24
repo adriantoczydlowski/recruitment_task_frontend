@@ -1,0 +1,9 @@
+.task {
+  cursor: pointer;
+}
+.task:hover {
+  font-weight: bold;
+}
+.new-task {
+  margin: 20px;
+}

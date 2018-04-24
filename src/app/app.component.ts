@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Http } from '@angular/http';
 import { map } from 'rxjs/operators';
@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   form: FormGroup;
   loading = false;
   tasks$;
@@ -24,43 +24,41 @@ export class AppComponent implements OnInit {
   createForm() {
     this.form = this.fb.group({
       name: ['', Validators.required],
-      avatar: null
+      file: null
     });
   }
 
   onFileChange(event) {
-    const reader = new FileReader();
-    if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        console.log('data', reader.result);
-        this.form.get('avatar').setValue({
-          filename: file.name,
-          filetype: file.type,
-          value: reader.result.split(',')[1]
-        });
-      };
-    }
+    /*
+      Use a FileReader and save data into a formControl `file`
+      Format: {
+        filename,
+        filetype,
+        value
+      }
+    */
   }
 
   onSubmit() {
-    const formModel = this.form.value;
-    this.loading = true;
-    this.http.post('api/tasks/upload', formModel).subscribe(() => {
-      this.loading = false;
-      this.getTasks();
-      alert('done!');
-    });
-    // setTimeout(() => {
-    //   console.log(formModel);
-    //   alert('done!');
-    //   this.loading = false;
-    // }, 1000);
+    /*
+     Upload a file to the server
+    */
+  }
+
+  onAddNewTask(name) {
+    /*
+      Save a new task
+    */
+  }
+
+  onRemoveTask(id) {
+    /*
+    Remove a task from the server
+    */
   }
 
   clearFile() {
-    this.form.get('avatar').setValue(null);
+    this.form.get('file').setValue(null);
     this.fileInput.nativeElement.value = '';
   }
 
